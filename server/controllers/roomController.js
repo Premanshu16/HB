@@ -39,11 +39,15 @@ export const createRoom = async (req, res) => {
         });
 
     } catch (error) {
-        res.json({
-            success: false,
-            message: error.message
-        });
-    }
+    console.error("CREATE ROOM ERROR:", error);
+    console.error("ERROR MESSAGE:", error.message);
+    console.error("ERROR HTTP CODE:", error.http_code);
+
+    res.json({
+        success: false,
+        message: error.message
+    });
+}
 };
 
 
