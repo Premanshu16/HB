@@ -19,15 +19,27 @@ export const createRoom = async (req, res) => {
 
         // Upload images to Cloudinary
 
-        console.log("Cloudinary check:", {
+console.log("Cloudinary check:", {
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key_exists: !!process.env.CLOUDINARY_API_KEY,
     api_secret_exists: !!process.env.CLOUDINARY_API_SECRET,
 });
-        const uploadImages = req.files.map(async (file) => {
-            const response = await cloudinary.uploader.upload(file.path);
-            return response.secure_url;
+
+const uploadImages = req.files.map(async (file) => {
+    try {
+        const response = await cloudinary.uploader.upload(file.path);
+        return response.secure_url;
+    } catch (error) {
+        console.error("CLOUDINARY UPLOAD ERROR:", {
+            message: error.message,
+            http_code: error.http_code,
+            name: error.name,
+            error: error.error
         });
+        throw error;
+    }
+});
+
 
         // Wait for all uploads to complete
         const images = await Promise.all(uploadImages);
