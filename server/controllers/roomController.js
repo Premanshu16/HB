@@ -7,9 +7,7 @@ export const createRoom = async (req, res) => {
     try {
         const { roomType, pricePerNight, amenities } = req.body;
 
-        const hotel = await Hotel.findOne({
-            owner: req.auth.userId
-        });
+        const hotel = await Hotel.findOne({ owner: req.user._id });
 
         if (!hotel) {
             return res.json({
