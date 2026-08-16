@@ -1,16 +1,23 @@
 // GET /api/user
 
-export const getUserData = async (req, res)=>{
-    try{
-
+export const getUserData = async (req, res) => {
+    try {
         const role = req.user.role;
-        const recentSearchCities = req.user.recentSearchedCities;
-        res.json({success: true, role, recentSearchedCities})
+        const recentSearchedCities = req.user.recentSearchedCities;
 
-    } catch (error){
-      res.json({success: false, message: error.message})
+        res.json({
+            success: true,
+            role,
+            recentSearchedCities
+        });
+
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
 
 // store user recent searched cities
 export const storeRecentSearchedCities = async (req, res)=>{
