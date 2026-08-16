@@ -26,16 +26,21 @@ console.log("Cloudinary check:", {
 });
 
 const uploadImages = req.files.map(async (file) => {
+    console.log("Uploading file:", file.path);
+
     try {
         const response = await cloudinary.uploader.upload(file.path);
+
+        console.log("UPLOAD SUCCESS:", response.secure_url);
+
         return response.secure_url;
+
     } catch (error) {
-        console.error("CLOUDINARY UPLOAD ERROR:", {
-            message: error.message,
-            http_code: error.http_code,
-            name: error.name,
-            error: error.error
-        });
+        console.log("CLOUDINARY FULL ERROR:", error);
+        console.log("ERROR RESPONSE:", error.error);
+        console.log("ERROR HTTP CODE:", error.http_code);
+        console.log("ERROR MESSAGE:", error.message);
+
         throw error;
     }
 });
