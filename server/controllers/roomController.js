@@ -109,9 +109,13 @@ export const getRooms = async (req, res) => {
 // API to get all rooms for a specific hotel
 export const getOwnerRooms = async (req, res) => {
     try {
-        const hotelData = await Hotel.findOne({
-            owner: req.auth.userId
-        });
+
+        console.log("=== OWNER ROOMS DEBUG ===");
+        console.log("Clerk ID:", req.auth().userId);
+        console.log("Mongo User ID:", req.user?._id);
+       const hotelData = await Hotel.findOne({
+    owner: req.user._id
+});
 
         if (!hotelData) {
             return res.json({
