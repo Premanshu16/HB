@@ -110,9 +110,7 @@ export const getRooms = async (req, res) => {
 export const getOwnerRooms = async (req, res) => {
     try {
 
-        console.log("=== OWNER ROOMS DEBUG ===");
-        console.log("Clerk ID:", req.auth().userId);
-        console.log("Mongo User ID:", req.user?._id);
+        
        const hotelData = await Hotel.findOne({
     owner: req.user._id
 });
