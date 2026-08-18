@@ -1,10 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Title from '../components/Title';
-import {assets, userBookingsDummyData} from '../assets/assets'
-const MyBookings = () => {
+import {assets} from '../assets/assets';
+import { useAppContext } from '../context/AppContext';
+import toast from 'react-hot-toast';
 
-  const [bookings, setBookings] = useState(userBookingsDummyData)
-  return (
+const MyBookings = () => {
+const {axios, getToken, user} = useAppContext();
+const [bookings, setBookings] = useState([]);
+
+const fetchUserBookings = async ()=>{
+  try{
+    const {data} = await axios.get('/api/bookings/user', {headers: {Authorization: `Bearer ${await getToken()}`}})
+    if(data.success){
+      setBookings(data.bookings)
+    }else{
+      toast.error(data.message)
+    }
+  }catch (error) {
+          toast.error(error.message)
+
+  }
+}
+useEffect(()=>{
+  if(user){
+    fetchUserBookings()
+  }
+},[user])
+return (
     <div className="py-28 md:py-35 px-4 md:px-16 lg:px-24 xl:px-32">
 
       <Title
@@ -43,17 +65,17 @@ const MyBookings = () => {
 </div>
  </div>
             {/* Date & timings */}
-            <div className='flex fex-row md:items-center md:gap-12 mt-3 gap-8'>
+            <div className='flex flex-row md:items-center md:gap-12 mt-3 gap-8'>
        <div>
        <p>Check-In</p>
-      <p className='text=gray-500 text-sm'>
+      <p className='text-gray-500 text-sm'>
       {new Date(booking.checkInDate).toDateString()}
        </p>
       </div>
 
        <div>
        <p>Check-Out</p>
-      <p className='text=gray-500 text-sm'>
+      <p className='text-gray-500 text-sm'>
       {new Date(booking.checkOutDate).toDateString()}
        </p>
       </div>
@@ -67,7 +89,7 @@ const MyBookings = () => {
                 </p>
               </div>
                {!booking.isPaid && (
-                <button className='px-4 py-1.5 mt-4 text-xs border border-gray-400 rounded-fullhover:bg-gray-50 transition-all cursor-pointer'>
+                <button className='px-4 py-1.5 mt-4 text-xs border border-gray-400 rounded-full hover:bg-gray-50 transition-all cursor-pointer'>
                   Pay now
                 </button>
                )}

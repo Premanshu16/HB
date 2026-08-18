@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { assets,  facilityIcons } from "../assets/assets";
 import StarRating from "../components/StarRating";
@@ -302,10 +302,14 @@ return room.hotel.city.toLowerCase().includes(destination.toLocaleLowerCase())
             </p>
 
             {roomTypes.map((room, index) => (
-              <CheckBox
-                key={index}
-                label={room} selected={selectedFilters.roomType.includes(room)} onChange={(checked)=handleFilterChange(checked, room, 'roomType')}
-              />
+             <CheckBox
+  key={index}
+  label={room}
+  selected={selectedFilters.roomType.includes(room)}
+  onChange={(checked) =>
+    handleFilterChange(checked, room, "roomType")
+  }
+/>
             ))}
           </div>
 
@@ -317,9 +321,13 @@ return room.hotel.city.toLowerCase().includes(destination.toLocaleLowerCase())
 
             {priceRange.map((range, index) => (
               <CheckBox
-                key={index}
-                label={`$${currency} ${range}`} selected={selectedFilters.priceRange.includes(range)} onChange={(checked)=handleFilterChange(checked, range, 'priceRange')}
-              />
+  key={index}
+  label={`${currency} ${range}`}
+  selected={selectedFilters.priceRange.includes(range)}
+  onChange={(checked) =>
+    handleFilterChange(checked, range, "priceRange")
+  }
+/>
             ))}
           </div>
 
