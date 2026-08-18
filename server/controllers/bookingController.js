@@ -130,9 +130,13 @@ await transporter.sendMail(mailOptions);
 
 res.json({success: true, message: "Booking created successfully"})
 
-} catch (error){
-console.log(error);
-res.json({success: false, message: "Failed to create booking "})
+}  catch (error) {
+    console.error("CREATE BOOKING ERROR:", error);
+
+    res.json({
+        success: false,
+        message: error.message
+    });
 }
 
 };
