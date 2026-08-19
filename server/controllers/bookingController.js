@@ -189,16 +189,19 @@ export const stripePayment = async (req, res)=>{
     
 const stripeInstance = new stripe(process.env.STRIPE_SECURITY_KEY);
 
-const line_items = {
-    price_data:{
-        currency: "usd",
-        product_data:{
-            name: roomData.hotel.name,
+
+const line_items = [
+    {
+        price_data: {
+            currency: "usd",
+            product_data: {
+                name: roomData.hotel.name,
+            },
+            unit_amount: Math.round(booking.totalPrice * 100),
         },
         quantity: 1,
-    
-    }
-}
+    },
+];
     //create checkout session
     const session = await stripeInstance.checkout.sessions.create({
         line_items,
