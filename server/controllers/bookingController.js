@@ -183,7 +183,7 @@ export const stripePayment = async (req, res)=>{
         const { bookingId } = req.body;
 
         const booking = await Booking.findById(bookingId);
-        const roomData  = await Room.finfById(booking.room).populate('hotel');
+        const roomData  = await Room.findById(booking.room).populate('hotel');
         const totalPrice = booking.totalPrice;
         const { origin } = req.headers;
     
