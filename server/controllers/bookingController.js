@@ -205,7 +205,7 @@ const line_items = {
         mode: "payment",
         success_url: `${origin}/loader/my-bookings`,
         cancel_url: `${origin}/my-bookings`,
-        matadata:{
+        metadata:{
             bookingId,
         }
     })
