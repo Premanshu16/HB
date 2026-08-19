@@ -212,6 +212,10 @@ const line_items = {
     res.json({success:true, url: session.url})
 
     } catch (error) {
-        res.json({success:false, message: "Payment Failed"})
-    }
+    console.error("STRIPE PAYMENT ERROR:", error);
+    res.json({
+        success: false,
+        message: error.message
+    });
+}
 }
