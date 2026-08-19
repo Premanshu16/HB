@@ -13,7 +13,12 @@ import bookingRouter from "./routes/bookingRoutes.js";
 connectDB();
 connectCloudinary();
 const app = express();
-app.use(cors()); // enable cross origin resource sharing
+app.use(
+    cors({
+        origin: "https://quickstay-five-weld.vercel.app",
+        credentials: true,
+    })
+); // enable cross origin resource sharing
 
 app.use(
     "/api/clerk",
