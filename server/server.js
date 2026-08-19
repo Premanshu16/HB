@@ -9,36 +9,46 @@ import hotelRouter from "./routes/hotelRoutes.js";
 import connectCloudinary from "./configs/cloudinary.js";
 import roomRouter from "./routes/roomRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
+import { stripeWebhooks } from "./controllers/stripeWebhooks.js";
 
 connectDB();
 connectCloudinary();
+
 const app = express();
+
 app.use(
     cors({
         origin: "https://quickstay-five-weld.vercel.app",
         credentials: true,
     })
-); // enable cross origin resource sharing
+);
 
+// Stripe webhook must come BEFORE express.json()
+app.post(
+    "/api/stripe",
+    express.raw({ type: "application/json" }),
+    stripeWebhooks
+);
+
+// Clerk webhook must also receive raw body
 app.use(
     "/api/clerk",
     express.raw({ type: "application/json" }),
     clerkWebhooks
 );
 
-// Middleware
+// Normal middleware
 app.use(express.json());
 app.use(clerkMiddleware());
 
-// API to listen to clerk webhooks
+app.get("/", (req, res) => {
+    res.send("API is working");
+});
 
-
-app.get("/", (req, res) => res.send("API is working"));
-app.use('/api/user', userRouter)
-app.use('/api/hotels', hotelRouter)
-app.use('/api/rooms', roomRouter)
-app.use('/api/bookings', bookingRouter)
-
+app.use("/api/user", userRouter);
+app.use("/api/hotels", hotelRouter);
+app.use("/api/rooms", roomRouter);
+app.use("/api/bookings", bookingRouter);
 
 const PORT = process.env.PORT || 3000;
 
